@@ -1,15 +1,14 @@
 import streamlit as st
-from dotenv import load_dotenv
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 
 #load environment variables
-load_dotenv()
+openai_api_key = st.secrets["openai_api_key"]
 
 #initialization
-embedding = OpenAIEmbeddings()
+embedding = OpenAIEmbeddings(openai_api_key=openai_api_key)
 vectordb = Chroma(embedding_function=embedding, persist_directory='db', collection_name='zaparkujto')
 
 #application title
@@ -24,7 +23,7 @@ if title:
     docs = vectordb.similarity_search(title, k=4)
     
     #ask open ai gpt model
-    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+    chain = load_qa_chain(OpenAI(temperature=0, openai_api_key=openai_api_key), chain_type="stuff")
     output = chain({"input_documents": docs, "question": title})
     
     #show output to the application
