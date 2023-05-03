@@ -8,12 +8,12 @@ from langchain.llms import OpenAI
 load_dotenv()
 
 #initialization
-question = "What my departament do?"
+question = "Co vše umí aplikace Zaparkujto?"
 embedding = OpenAIEmbeddings()
-vectordb = Chroma(embedding_function=embedding, persist_directory='db', collection_name='mydepartamentdata')
+vectordb = Chroma(embedding_function=embedding, persist_directory='db', collection_name='zaparkujto')
 
 #search for similar paragraphs
-docs = vectordb.similarity_search(question, k=4)
+docs = vectordb.similarity_search(question)
 
 #load question answering chain into OpenAI GPT model
 chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")

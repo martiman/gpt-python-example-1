@@ -4,11 +4,11 @@ from langchain.vectorstores import Chroma
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.document_loaders import TextLoader
 
-#load environment variables
+#load environment variable
 load_dotenv()
 
 #read text file
-loader = TextLoader('data/department_data.txt')
+loader = TextLoader('data/smlouva.txt')
 loaded_docs = loader.load()
 
 #split it into chunks
@@ -19,7 +19,7 @@ splitted_docs = text_splitter.split_documents(loaded_docs)
 embeddings = OpenAIEmbeddings()
 
 #create a chroma db with embeddings
-db = Chroma(embedding_function=embeddings,persist_directory='db', collection_name='mydepartamentdata')
+db = Chroma(embedding_function=embeddings,persist_directory='db', collection_name='zaparkujto')
 
 #save docs to chroma db
 db.add_documents(splitted_docs)
